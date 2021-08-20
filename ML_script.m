@@ -7,32 +7,44 @@
 % Validate predictive modeling accuracy on data not used for calibrating the model
 % Use the model for prediction if satisfied with its performance
 
+%THIS CODE WILL PREDICT PRICES IN THE FUTURE BASED ON A REGION
+%PUT ALL PREDICTIONS INTO A CSV FOR A USER TO USE IN PYTHON LATER
 
 %download travel dataframe
-filename = 'travel.csv'; %need the table
-inputNames = {'Car','Region','State','Grade', 'Price'};
-outputNames = {'Future_Price'};
+filename = 'oil_prices.csv';
+travel_data = readtable(filename);
+inputNames = {'date','location','grade'};
+outputNames = {'price'};
 travelAttributes = [inputNames,outputNames];
+TT = table2timetable(travel_data);
 
 %import data
-formatSpec = '%8f%7f%8f%3f%8f%8f%7f%8f%4f%7f%7f%7f%7f%f%[^\n\r]';
-fileID = fopen(filename,'r');
-dataArray = textscan(fileID, formatSpec, 'Delimiter', '', 'WhiteSpace', '',  'ReturnOnError', false);
-fclose(fileID);
-travel_data = table(dataArray{1:end-1}, 'VariableNames', {'VarName1','VarName2','VarName3','VarName4','VarName5','VarName6','VarName7','VarName8','VarName9',
-'VarName10','VarName11','VarName12','VarName13','VarName14'});
-
-% Delete the file and clear temporary variables
-clearvars filename formatSpec fileID dataArray ans;
-delete travel.csv
-
-
-
-
+%travel_data = table(dataArray{1:end-1}, 'VariableNames', {'VarName1','VarName2','VarName3','VarName4','VarName5','VarName6','VarName7','VarName8','VarName9',
+%'VarName10','VarName11','VarName12','VarName13','VarName14'});
 %reads into table
-travel_data.Properties.VariableNames = travelAttributes;
-X = travel_data{:,inputNames};
-y = trvael_data{:,outputNames};
+
+% travel_data.Properties = travelAttributes;
+x_date = travel_data{:,1};
+x_location = travel_data{:,3};
+x_grade = travel_data{:,4};
+y_price = travel_data(:,2);
+
+for 1:length(TT)
+    if(
+        
+    else
+        
+    end
+end
+
+
+
+stackedplot(TT)
+%C = [x_date, y_price]
+
+% datetime.setDefaultFormats('defaultdate','yyyy-MM-dd')
+%TT = table2timetable(travel_data,{'date','price', 'location', 'grade'});
+%plot(x_date,y_price)
 
 %train regression tree
 rng(5); % For reproducibility
@@ -41,8 +53,8 @@ rng(5); % For reproducibility
 cv = cvpartition(height(travel_data),'holdout',0.1);
 
 t = RegressionTree.template('MinLeaf',5);
-mdl = fitensemble(X(cv.training,:),y(cv.training,:),'LSBoost',500,t,...
-    'PredictorNames',inputNames,'ResponseName',outputNames{1},'LearnRate',0.01);
+mdl_dateprice = fitensemble(x_date(cv.training,:),y_price(cv.training,:),'LSBoost',500,t,...
+    'PredictorNames',inputNames,'ResponseName',outputNames,'LearnRate',0.01);
 
 L = loss(mdl,X(cv.test,:),y(cv.test),'mode','ensemble');
 fprintf('Mean-square testing error = %f\n',L);
@@ -62,4 +74,7 @@ ylabel('Gas Price');
 
 %From this model, we can generate future points
 
+ypred = predict(mdl,Xnew)
+[ypred,yci] = predict(mdl,Xnew)
+[ypred,yci] = predict(mdl,Xnew,Name,Value)
 
