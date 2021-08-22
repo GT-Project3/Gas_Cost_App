@@ -10,6 +10,7 @@
 
     <!-- Bootstrap core CSS -->
 <link href="assets/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="assets/css/all.css" rel="stylesheet">
 
 <meta name="theme-color" content="#7952b3">
 
@@ -50,16 +51,11 @@
   <body>
     
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Project 3 - Group 2</a>
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">GT Project 3 - Group 2</a>
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-  <div class="navbar-nav">
-    <div class="nav-item text-nowrap">
-      <a class="nav-link px-3" href="#">Sign out</a>
-    </div>
-  </div>
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" style="color: yellow;" href="#">Georgia Tech Data Science Boot Camp</a>
 </header>
 
 <div class="container-fluid">
@@ -70,7 +66,7 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="#">
               <span data-feather="home"></span>
-                Explore Data
+                Fuel Cost Predictor <i class="fas fa-gas-pump"></i>
             </a>
           </li>
         </ul>
@@ -107,41 +103,50 @@
             <option value="3">Three</option>
           </select>
 
-          <label for="oilGrade" class="form-label">Oil Grade</label>
-          <select id="oilGrade" class="form-select mb-2" aria-label="oil grade">
-            <option selected>Select One</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>
-
-
           <input class="form-check-input mb-2" type="checkbox" value="" id="returnTrip">
           <label style="font-size: 16px;" class="form-check-label mb-2" for="returnTrip">
-          &nbsp;Return Trip?
+          &nbsp;Round Trip?
           </label>
 
         </div>
 
         <div class="row p-3">
-          <button type="button" id="submit" class="btn btn-secondary mb-2">ROUTE</button>
+          <button type="button" id="submit" class="btn btn-secondary mb-2" data-bs-toggle="modal" data-bs-target="#costModal">CALCULATE NOW</button>
         </div>
         <div class="row p-3">
-          <div id="directions-panel"></div>
+          <div id="directions-panel" class="alert alert-success" style="display: none;"></div>
         </div>
       </div>
     </nav>
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Predicting Gas Prices Using Historical Data</h1>
+        <h1 class="h2">Road Trip Gas Cost Predictor <i class="fas fa-gas-pump"></i></h1>
+        <h2 id="cost">Estimated Cost: $<span id="cost_head"></span></h2>
       </div>
-      <!--<canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>-->
 
       <div id="map" class="my-4 w-100" width="900" height="380"></div>
 
     </main>
 
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="costModal" tabindex="-1" aria-labelledby="costModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="costModalLabel">Estimated Fuel Cost</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        We estimate that this trip will cost you $<span id="cost_modal"></span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -166,6 +171,7 @@
       directionsRenderer.setMap(map);
       document.getElementById("submit").addEventListener("click", () => {
         calculateAndDisplayRoute(directionsService, directionsRenderer);
+        document.getElementById("directions-panel").style.display = "inline";
       });
       
       var input = document.getElementById('startLocation');
@@ -216,6 +222,8 @@
             const summaryPanel = document.getElementById("directions-panel");
             summaryPanel.innerHTML = "";
 
+            var totalMiles = 0;
+
             // For each route, display summary information.
             for (let i = 0; i < route.legs.length; i++) {
               const routeSegment = i + 1;
@@ -224,7 +232,13 @@
               summaryPanel.innerHTML += route.legs[i].start_address + " to ";
               summaryPanel.innerHTML += route.legs[i].end_address + "<br>";
               summaryPanel.innerHTML += route.legs[i].distance.text + "<br><br>";
+              totalMiles = totalMiles + (route.legs[i].distance.value / 1609.34); // Convert to Miles
             }
+
+            // PUT OUR ESTIMATE HERE cost_modal --  (Total Miles / Miles Per Gallon) * Price of Gallon of Gas
+            const costModal = document.getElementById("cost_modal");
+            document.getElementById("cost_modal").innerHTML = String(Math.round((totalMiles/15) * 3.15)); // Put Gas Price Per Gallon Here and MPG (15 MPG now)
+            document.getElementById("cost_head").innerHTML = String(Math.round((totalMiles/15) * 3.15)); // Put Gas Price Per Gallon Here and MPG (15 MPG now)
           })
           .catch((e) => window.alert("Directions request failed due to " + status));
       }
