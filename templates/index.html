@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Ting Zuo Jennings created the HTML and Javascript for the Georgia Tech Bootcamp Final Proejct 3 - Group 2.">
+    <meta name="author" content="Ting Zuo Jennings">
+    <title>Predicting Gas Prices Using Historical Data</title>
+    
+    <!-- Bootstrap core CSS -->
+    <link href="static/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/all.css" rel="stylesheet">
+
+    <meta name="theme-color" content="#7952b3">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      #map, #map_canvas {
+        height: 80%;
+        position: absolute;
+      }
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      .container-fluid {
+          height: 100%;
+          position: relative;
+      }
+    </style>
+    
+    <!-- Custom styles for this template -->
+    <link href="static/css/dashboard.css" rel="stylesheet">
+  </head>
+  <body>
+    
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">GT Project 3 - Group 2</a>
+  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" style="color: yellow;" href="#">Georgia Tech Data Science Boot Camp</a>
+</header>
+
+<div class="container-fluid">
+  <div class="row">
+    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+      <div class="position-sticky pt-3">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">
+              <span data-feather="home"></span>
+                Fuel Cost Predictor <i class="fas fa-gas-pump"></i>
+            </a>
+          </li>
+        </ul>
+
+        <form id="myForm" action="">
+          <div class="btn-toolbar mb-2 mb-md-0 p-3">        
+
+            <label for="startLocation" class="form-label">Start Location</label>
+            <input id="startLocation" type="text"  class="form-control mb-2" aria-label="start location" required />
+            <input type="hidden" id="startLat" />
+            <input type="hidden" id="startLon" />
+
+            <label for="endLocation" class="form-label">End Location</label>
+            <input id="endLocation" class="form-control mb-2" aria-label="end location" required />
+            <input type="hidden" id="endLat" />
+            <input type="hidden" id="endLon" />
+
+            <!-- DATES -->
+            <label for="startDate" class="form-label">Start Date</label>
+            <input id="startDate" type="date" class="form-select mb-2" aria-label="start date">
+            <label for="endDate" class="form-label">End Date</label>
+            <input id="endDate" type="date" class="form-select mb-2" aria-label="end date">
+
+            <!-- MILES PER GALLON -->
+            <label for="carSize" class="form-label">Fuel Efficiency</label>
+            <select id="carSize" class="form-select mb-2" aria-label="car size" required>
+              <option value="" selected>Select One</option>
+              <option value="10">10 Miles Per Gallon</option>
+              <option value="15">15 Miles Per Gallon</option>
+              <option value="20">20 Miles Per Gallon</option>
+              <option value="25">25 Miles Per Gallon</option>
+              <option value="30">30 Miles Per Gallon</option>
+              <option value="35">35 Miles Per Gallon</option>
+            </select>
+
+            <!-- TYPE OF GAS -->
+            <label for="oilGrade" class="form-label">Fuel Type</label>
+            <select id="oilGrade" class="form-select mb-2" aria-label="oil grade" required>
+              <option value="" selected>Select One</option>
+              <option value="1">Regular</option>
+              <option value="1.25">Mid-Grade</option>
+              <option value="1.5">Premium</option>
+            </select>
+
+            <input class="form-check-input mb-2" type="checkbox" value="" id="returnTrip">
+            <label style="font-size: 16px;" class="form-check-label mb-2" for="returnTrip">
+            &nbsp;Round Trip?
+            </label>
+
+          </div>
+
+          <div class="row mb-2 mb-md-0 p-3">
+            <button type="button" id="submit" class="btn btn-secondary mb-2">CALCULATE NOW</button>
+          </div>
+        </form>
+
+        <div class="row mb-2 mb-md-0 p-3">
+          <div id="directions-panel" class="alert alert-success" style="display: none;"></div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Road Trip Gas Cost Predictor <i class="fas fa-gas-pump"></i></h1>
+        <h2 id="cost">Estimated Cost: $<span id="cost_head"></span></h2>
+      </div>
+
+      <div id="map" class="my-4 w-100"></div>
+
+    </main>
+
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="costModal" tabindex="-1" aria-labelledby="costModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="costModalLabel">Estimated Fuel Cost</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body row">
+        <div class="col"><img src="static/img/gas.jfif" /></div>
+        <div class="col" style="font-size: x-large;">We estimate that this trip will cost you $<span id="cost_modal" style="color: red;"></span> to drive a distance of <span id="dist_modal" style="color: seagreen;"></span> miles.</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="static/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJ-z5O3FRSmIFNWi2etwzINeIbKt9JCxw&libraries=places">
+  </script> 
+  <script src="static/js/dashboard.js" ></script>
+  <script src="static/js/main.js" ></script>
+         
+
+  </body>
+</html>
