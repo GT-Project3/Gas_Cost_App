@@ -89,14 +89,35 @@ document.addEventListener("DOMContentLoaded", function(){
             summaryPanel.innerHTML += route.legs[i].distance.text + "<br><br>";
             totalMiles = totalMiles + (route.legs[i].distance.value / 1609.34); // Convert to Miles
           }
+          
 
+          // Send user values to python 
+          $.ajax({
+            url: "/api/create_todo",
+            method: "POST",
+            data:{
+                "fuel_eff": $("#carSize").val(),
+                "start_date": $("#startDate").val(),
+                "fuel_type": $("#oilGrade").val(),
+            },
+            success: response => {
+                // With 
+                var totalCost = response;
+                document.getElementById("cost_modal").innerHTML = totalCost;
+                document.getElementById("cost_head").innerHTML = totalCost;
+                document.getElementById("dist_modal").innerHTML = String(Math.round(totalMiles) * (document.getElementById("returnTrip").checked == true ? 2 : 1)); // Put Gas Price Per Gallon Here and MPG (15 MPG now)
+                console.log('hi');
+                $('#costModal').modal('show');
+            },
+            error: err => {
+                console.log(err);
+            }
+        })
         //   PUT OUR ESTIMATE HERE cost_modal --  (Total Miles / Miles Per Gallon) * Price of Gallon of Gas
         //   const costModal = document.getElementById("cost_modal");
         //   document.getElementById("dist_modal").innerHTML = String(Math.round(totalMiles) * (document.getElementById("returnTrip").checked == true ? 2 : 1)); // Put Gas Price Per Gallon Here and MPG (15 MPG now)
         //   document.getElementById("cost_modal").innerHTML = String(Math.round((totalMiles/document.getElementById("carSize").value) * 3.15) * (document.getElementById("returnTrip").checked == true ? 2 : 1)); // Put Gas Price Per Gallon Here and MPG (15 MPG now)
         //   document.getElementById("cost_head").innerHTML = String(Math.round((totalMiles/document.getElementById("carSize").value) * 3.15) * (document.getElementById("returnTrip").checked == true ? 2 : 1)); // Put Gas Price Per Gallon Here and MPG (15 MPG now)
-
-          $('#costModal').modal('show');
         })
   .catch((e) => window.alert("Directions request failed due to " + status));
 }
