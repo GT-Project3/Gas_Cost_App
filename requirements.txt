@@ -4,6 +4,7 @@ flask_cors
 sqlalchemy
 datetime
 dnspython
+psycopg2-binary
 
 
 

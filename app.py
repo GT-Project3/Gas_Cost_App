@@ -21,7 +21,7 @@ finally:
     # from bson.json_util import loads, dumps
 
 app = Flask(__name__)
-client = os.getenv("SQL_URI","gaspriceproject.chejw18rcl0w.us-east-1.rds.amazonaws.com:5432/gaspriceproject" )
+client = os.getenv("SQL_URI","gaspriceproject.chejw18rcl0w.us-east-1.rds.amazonaws.com:5432/gaspriceproject")
 CORS(app)
 
 # CONNECT TO POSTGRES
@@ -128,7 +128,7 @@ def post_create_todo():
 
 @app.route('/about')
 def about():
-    return render_template("about.html")
+    return render_template("/html/about.html")
 
 if __name__ == '__main__':    
     app.run(debug=True)
