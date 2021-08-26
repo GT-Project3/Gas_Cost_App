@@ -40,6 +40,8 @@ def next_weekday(d, weekday):
     return d + datetime.timedelta(days_ahead)
 
 CORS(app,support_credentials=True)
+
+
 @app.route('/', methods=["GET"])
 def home():
     return render_template("index.html")
@@ -128,7 +130,7 @@ def post_create_todo():
 
 @app.route('/about')
 def about():
-    return render_template("/html/about.html")
+    return render_template("about.html")
 
 if __name__ == '__main__':    
     app.run(debug=True)
