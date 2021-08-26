@@ -64,8 +64,14 @@ def post_create_todo():
     else:
         grade = "p"
     
-    states = ["Alabama", "California"] # VALUES TO BE GIVEN BY PETER
-
+    states = request.form["states"] # VALUES TO BE GIVEN BY PETER
+    states = states.replace("[","")
+    states = states.replace("]","")
+    states = states.replace('"',"")
+    states = states.split(',')
+    print(states)
+    #states = ['Illinois', 'Colorado']
+    
     tank_size = 15
 
     tables_needed = []
@@ -76,6 +82,7 @@ def post_create_todo():
                 region = record[1].replace(" ","").lower()
                 table_name = region + "_" + grade
                 tables_needed.append(table_name)
+
 
     total_cost = 0
 

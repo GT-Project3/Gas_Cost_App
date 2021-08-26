@@ -63,11 +63,24 @@ document.addEventListener("DOMContentLoaded", function(){
     });
 
     function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+      const waypts = []
+      
+      var test = [{lat: 35.106, lng: -106.62}, {lat: 33.75, lng: -84.38}];
+      console.log(test[1]);
+
+
+      waypts.push({
+        location: test[1]
+      })
+      waypts.push({
+        location:'chicago, il'
+      })
+
       directionsService
         .route({
           origin: document.getElementById("startLocation").value,
           destination: document.getElementById("endLocation").value,
-          waypoints: null, // ADD WAYPOINTS HERE IF WE HAVE THEM
+          waypoints: waypts, // ADD WAYPOINTS HERE IF WE HAVE THEM
           optimizeWaypoints: true,
           travelMode: google.maps.TravelMode.DRIVING,
         })
@@ -92,6 +105,9 @@ document.addEventListener("DOMContentLoaded", function(){
           
 
           // Send user values to python 
+          var states = ['Colorado', 'Illinois'];
+          var statesJson = JSON.stringify(states);
+
           $.ajax({
             url: "/api/create_todo",
             method: "POST",
@@ -99,14 +115,13 @@ document.addEventListener("DOMContentLoaded", function(){
                 "fuel_eff": $("#carSize").val(),
                 "start_date": $("#startDate").val(),
                 "fuel_type": $("#oilGrade").val(),
+                "states": statesJson
             },
             success: response => {
-                // With 
                 var totalCost = response;
                 document.getElementById("cost_modal").innerHTML = totalCost;
                 document.getElementById("cost_head").innerHTML = totalCost;
                 document.getElementById("dist_modal").innerHTML = String(Math.round(totalMiles) * (document.getElementById("returnTrip").checked == true ? 2 : 1)); // Put Gas Price Per Gallon Here and MPG (15 MPG now)
-                console.log('hi');
                 $('#costModal').modal('show');
             },
             error: err => {
