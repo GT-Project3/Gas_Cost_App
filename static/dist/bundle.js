@@ -147,8 +147,8 @@ document.addEventListener("DOMContentLoaded", function(){
 
     
     const map = new google.maps.Map(document.getElementById("map"), {
-      center: { lat: 33.7755910265767, lng: -84.39626354416843 },
-      zoom: 13,
+      center: { lat: 37.090, lng: -95.7129 },
+      zoom: 5,
       mapTypeId: "roadmap",
     });
 
@@ -379,8 +379,8 @@ document.addEventListener("DOMContentLoaded", function(){
                   },
                   success: response => {
                       var totalCost = response;
-                      document.getElementById("cost_modal").innerHTML = totalCost;
-                      document.getElementById("cost_head").innerHTML = totalCost;
+                      document.getElementById("cost_modal").innerHTML = totalCost * (document.getElementById("returnTrip").checked == true ? 2 : 1);
+                      document.getElementById("cost_head").innerHTML = totalCost * (document.getElementById("returnTrip").checked == true ? 2 : 1);
                       document.getElementById("dist_modal").innerHTML = String(Math.round(totalMiles) * (document.getElementById("returnTrip").checked == true ? 2 : 1)); // Put Gas Price Per Gallon Here and MPG (15 MPG now)
                       $('#costModal').modal('show');
                   },
