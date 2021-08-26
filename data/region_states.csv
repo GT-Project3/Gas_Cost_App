@@ -1,21 +1,21 @@
 state,region
 Alabama,Gulf Coast
-Arizona,West Coast (PADD 5) Except California
+Arizona,West Coast 
 Arkansas,Lower Atlantic
 California,California
 Colorado,Colorado
-Connecticut,New England (PADD 1A)
+Connecticut,New England
 Delaware,East Coast
 Florida,Florida
 Georgia,East Coast
-Idaho,West Coast (PADD 5) Except California
+Idaho,West Coast 
 Illinois,Midwest
 Indiana,Midwest
 Iowa,Midwest
 Kansas,Rocky Mountain
 Kentucky,Lower Atlantic
 Louisiana,Gulf Coast
-Maine,New England (PADD 1A)
+Maine,New England
 Maryland,East Coast
 Massachusetts,Massachusetts
 Michigan,Midwest
@@ -24,26 +24,26 @@ Mississippi,Gulf Coast
 Missouri,Midwest
 Montana,Midwest
 Nebraska,Rocky Mountain
-Nevada,West Coast (PADD 5) Except California
-New Hampshire,New England (PADD 1A)
+Nevada,West Coast 
+New Hampshire,New England
 New Jersey,East Coast
-New Mexico,West Coast (PADD 5) Except California
+New Mexico,West Coast 
 New York,New York
 North Carolina,East Coast
 North Dakota,Rocky Mountain
 Ohio,Ohio
 Oklahoma,Midwest
-Oregon,West Coast (PADD 5) Except California
-Pennsylvania,Central Atlantic (PADD 1B)
-Rhode Island,New England (PADD 1A)
+Oregon,West Coast 
+Pennsylvania,Central Atlantic
+Rhode Island,New England
 South Carolina,East Coast
 South Dakota,Rocky Mountain
 Tennessee,Lower Atlantic
 Texas,Texas
-Utah,West Coast (PADD 5) Except California
-Vermont,New England (PADD 1A)
+Utah,West Coast 
+Vermont,New England
 Virginia,East Coast
 Washington,Washington
-West Virginia,Central Atlantic (PADD 1B)
+West Virginia,Central Atlantic
 Wisconsin,Midwest
 Wyoming,Rocky Mountain

@@ -48,6 +48,16 @@ def home():
 @app.route("/api/create_todo", methods=["POST"])
 def post_create_todo():
     fuel_eff = request.form["fuel_eff"]
+    if fuel_eff == "compact":
+        tank_size = 12
+    elif fuel_eff == "sedan":
+        tank_size = 15
+    elif fuel_eff == "suv":
+        tank_size = 19
+    else:
+        tank_size = 25
+    
+    
 
     start_date = request.form["start_date"]
     year = int(start_date[:4])
@@ -70,9 +80,11 @@ def post_create_todo():
     states = states.replace('"',"")
     states = states.split(',')
     print(states)
-    #states = ['Illinois', 'Colorado']
+    state_length = len(states)
+    states = states[1:state_length]
+    print(states)
     
-    tank_size = 15
+    
 
     tables_needed = []
 
@@ -83,7 +95,8 @@ def post_create_todo():
                 table_name = region + "_" + grade
                 tables_needed.append(table_name)
 
-
+    #tables_needed = tables_needed[2:len(tables_needed)-2]
+    print(tables_needed)
     total_cost = 0
 
     for table in tables_needed:

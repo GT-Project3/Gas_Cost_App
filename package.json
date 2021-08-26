@@ -1,0 +1,25 @@
+{
+  "name": "gas_prices_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GT-Project3/Gas_Prices_Project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GT-Project3/Gas_Prices_Project/issues"
+  },
+  "homepage": "https://github.com/GT-Project3/Gas_Prices_Project#readme",
+  "dependencies": {
+    "google-polyline": "^1.0.3",
+    "jquery": "^3.6.0",
+    "lodash": "^4.17.21",
+    "request": "^2.88.2"
+  }
+}

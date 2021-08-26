@@ -63,19 +63,32 @@ document.addEventListener("DOMContentLoaded", function(){
     });
 
     function calculateAndDisplayRoute(directionsService, directionsRenderer) {
-      const waypts = []
+
+      console.log('hi')
+      var polyline = require('google-polyline');
+      console.log('bye')
+
+      var request = {
+        origin: document.getElementById("startLocation").value,
+        destination: document.getElementById("endLocation").value,
+        travelMode: "DRIVING"
+        };
       
-      var test = [{lat: 35.106, lng: -106.62}, {lat: 33.75, lng: -84.38}];
-      console.log(test[1]);
-
-
-      waypts.push({
-        location: test[1]
-      })
-      waypts.push({
-        location:'chicago, il'
-      })
-
+      directionsService
+        .route(request, function (result, status){
+          if (status == "OK") {
+          directionsRenderer.setDirections(result);
+          waypoints = polyline.decode(result.routes[0].overview_polyline);
+          }
+        })  
+      
+      // console.log(waypoints);
+      
+      
+      
+      
+      
+      
       directionsService
         .route({
           origin: document.getElementById("startLocation").value,
@@ -119,8 +132,8 @@ document.addEventListener("DOMContentLoaded", function(){
             },
             success: response => {
                 var totalCost = response;
-                document.getElementById("cost_modal").innerHTML = totalCost;
-                document.getElementById("cost_head").innerHTML = totalCost;
+                document.getElementById("cost_modal").innerHTML = totalCost * (document.getElementById("returnTrip").checked == true ? 2 : 1);
+                document.getElementById("cost_head").innerHTML = totalCost * (document.getElementById("returnTrip").checked == true ? 2 : 1);
                 document.getElementById("dist_modal").innerHTML = String(Math.round(totalMiles) * (document.getElementById("returnTrip").checked == true ? 2 : 1)); // Put Gas Price Per Gallon Here and MPG (15 MPG now)
                 $('#costModal').modal('show');
             },
