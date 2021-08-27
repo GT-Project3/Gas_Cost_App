@@ -86,7 +86,6 @@ function encode( points ) {
     return str
 
   })
-
 }
 
 function reduce( points, callback ) {
@@ -140,7 +139,9 @@ module.exports = {
 }
 
 },{"./decode":1,"./encode":2}],4:[function(require,module,exports){
-document.addEventListener("DOMContentLoaded", function(){
+
+
+  document.addEventListener("DOMContentLoaded", function(){
   
     const directionsService = new google.maps.DirectionsService();
     const directionsRenderer = new google.maps.DirectionsRenderer();
@@ -162,7 +163,7 @@ document.addEventListener("DOMContentLoaded", function(){
         if (!allAreFilled) return;
         if (!i.value) allAreFilled = false;
       })
-      if (allAreFilled) {
+      if (allAreFilled & document.getElementById("startDate").value != "") {
         calculateAndDisplayRoute(directionsService, directionsRenderer);
         document.getElementById("directions-panel").style.display = "inline";
       }
@@ -206,49 +207,7 @@ document.addEventListener("DOMContentLoaded", function(){
     });
 
     function calculateAndDisplayRoute(directionsService, directionsRenderer) {
-      // const waypts = []
-      
-      // var test = [{lat: 35.106, lng: -106.62}, {lat: 33.75, lng: -84.38}];
-      // console.log(test[1]);
 
-
-      // waypts.push({
-      //   location: test[1]
-      // })
-      // waypts.push({
-      //   location:'chicago, il'
-      // })
-
-      
-      // var waypts = new Array();
-      // var stops =  Math.floor(totalMiles / 300);
-      // if (stops >= 1 )   {
-      //     var mapPoints = null; //need to calculate lat/long or states of waypoints here, use python for list
-          
-          
-
-      //     //GET all lat/longs in a straight line between 2 distances, run a loop and pick the lat/long @ every 300 miles along
-
-      //     for (var j = 0; j < stops; j++) {    
-      //         var latx = null; // latitutde of waypoint
-      //         var longy = null; //longittude of waypoint
-      //         var address = new google.maps.LatLng(latx, longy)    
-      //         if (address !== "") {    
-      //             waypts.push({    
-      //                 location: address,    
-      //                 stopover: true  // used to show marker on map for waypoints    
-      //             });    
-      //         }    
-      //     }
-      // }
-
-      // else 
-      // var waypts = null;
-      
-      
-      
-      
-      
       var polyline = require('google-polyline');
       
       var request = {
@@ -379,94 +338,28 @@ document.addEventListener("DOMContentLoaded", function(){
                   },
                   success: response => {
                       var totalCost = response;
-                      document.getElementById("cost_modal").innerHTML = totalCost * (document.getElementById("returnTrip").checked == true ? 2 : 1);
-                      document.getElementById("cost_head").innerHTML = totalCost * (document.getElementById("returnTrip").checked == true ? 2 : 1);
-                      document.getElementById("dist_modal").innerHTML = String(Math.round(totalMiles) * (document.getElementById("returnTrip").checked == true ? 2 : 1)); // Put Gas Price Per Gallon Here and MPG (15 MPG now)
-                      $('#costModal').modal('show');
+
+                      if(totalCost == 0) {
+                        document.getElementById("cost_head").innerHTML = totalCost * (document.getElementById("returnTrip").checked == true ? 2 : 1);
+                        $('#costModal2').modal('show');
+                      } else {
+                        document.getElementById("cost_modal").innerHTML = totalCost * (document.getElementById("returnTrip").checked == true ? 2 : 1);
+                        document.getElementById("cost_head").innerHTML = totalCost * (document.getElementById("returnTrip").checked == true ? 2 : 1);
+                        document.getElementById("dist_modal").innerHTML = String(Math.round(totalMiles) * (document.getElementById("returnTrip").checked == true ? 2 : 1)); // Put Gas Price Per Gallon Here and MPG (15 MPG now)
+                        $('#costModal').modal('show');
+                      }
                   },
                   error: err => {
                       console.log(err);
                   }
               })
-              //   PUT OUR ESTIMATE HERE cost_modal --  (Total Miles / Miles Per Gallon) * Price of Gallon of Gas
-              //   const costModal = document.getElementById("cost_modal");
-              //   document.getElementById("dist_modal").innerHTML = String(Math.round(totalMiles) * (document.getElementById("returnTrip").checked == true ? 2 : 1)); // Put Gas Price Per Gallon Here and MPG (15 MPG now)
-              //   document.getElementById("cost_modal").innerHTML = String(Math.round((totalMiles/document.getElementById("carSize").value) * 3.15) * (document.getElementById("returnTrip").checked == true ? 2 : 1)); // Put Gas Price Per Gallon Here and MPG (15 MPG now)
-              //   document.getElementById("cost_head").innerHTML = String(Math.round((totalMiles/document.getElementById("carSize").value) * 3.15) * (document.getElementById("returnTrip").checked == true ? 2 : 1)); // Put Gas Price Per Gallon Here and MPG (15 MPG now)
+             
               })
         .catch((e) => window.alert("Directions request failed due to " + status));
       }
         });    
             }
         })  
-    
-        
-      
-      
-      
-      
-      
-//       directionsService
-//         .route({
-//           origin: document.getElementById("startLocation").value,
-//           destination: document.getElementById("endLocation").value,
-//           waypoints: waypts, // ADD WAYPOINTS HERE IF WE HAVE THEM
-//           optimizeWaypoints: true,
-//           travelMode: google.maps.TravelMode.DRIVING,
-//         })
-//         .then((response) => {
-//           directionsRenderer.setDirections(response);
-//           const route = response.routes[0];
-//           const summaryPanel = document.getElementById("directions-panel");
-//           summaryPanel.innerHTML = "";
-
-//           var totalMiles = 0;
-
-//           // For each route, display summary information.
-//           for (let i = 0; i < route.legs.length; i++) {
-//             const routeSegment = i + 1;
-//             summaryPanel.innerHTML +=
-//               "<b>Route Segment: " + routeSegment + "</b><br>";
-//             summaryPanel.innerHTML += route.legs[i].start_address + " to ";
-//             summaryPanel.innerHTML += route.legs[i].end_address + "<br>";
-//             summaryPanel.innerHTML += route.legs[i].distance.text + "<br><br>";
-//             totalMiles = totalMiles + (route.legs[i].distance.value / 1609.34); // Convert to Miles
-//           }
-          
-
-//           // Send user values to python 
-//           var states = ['Colorado', 'Illinois'];
-//           var statesJson = JSON.stringify(states);
-
-//           $.ajax({
-//             url: "/api/create_todo",
-//             method: "POST",
-//             data:{
-//                 "fuel_eff": $("#carSize").val(),
-//                 "start_date": $("#startDate").val(),
-//                 "fuel_type": $("#oilGrade").val(),
-//                 "states": statesJson
-//             },
-//             success: response => {
-//                 var totalCost = response;
-//                 document.getElementById("cost_modal").innerHTML = totalCost;
-//                 document.getElementById("cost_head").innerHTML = totalCost;
-//                 document.getElementById("dist_modal").innerHTML = String(Math.round(totalMiles) * (document.getElementById("returnTrip").checked == true ? 2 : 1)); // Put Gas Price Per Gallon Here and MPG (15 MPG now)
-//                 $('#costModal').modal('show');
-//             },
-//             error: err => {
-//                 console.log(err);
-//             }
-//         })
-//         //   PUT OUR ESTIMATE HERE cost_modal --  (Total Miles / Miles Per Gallon) * Price of Gallon of Gas
-//         //   const costModal = document.getElementById("cost_modal");
-//         //   document.getElementById("dist_modal").innerHTML = String(Math.round(totalMiles) * (document.getElementById("returnTrip").checked == true ? 2 : 1)); // Put Gas Price Per Gallon Here and MPG (15 MPG now)
-//         //   document.getElementById("cost_modal").innerHTML = String(Math.round((totalMiles/document.getElementById("carSize").value) * 3.15) * (document.getElementById("returnTrip").checked == true ? 2 : 1)); // Put Gas Price Per Gallon Here and MPG (15 MPG now)
-//         //   document.getElementById("cost_head").innerHTML = String(Math.round((totalMiles/document.getElementById("carSize").value) * 3.15) * (document.getElementById("returnTrip").checked == true ? 2 : 1)); // Put Gas Price Per Gallon Here and MPG (15 MPG now)
-//         })
-//   .catch((e) => window.alert("Directions request failed due to " + status));
-// }
-//   });
 
 },{"google-polyline":3}]},{},[4]);
 
