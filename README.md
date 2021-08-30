@@ -7,7 +7,6 @@ We used gas price data with **Machine Learning** to create an app that took in u
 
 We set up a backend server using **AWS** and **PostgreSQL**. We calculated future prices prices of gas using **Scikit Learn**. 
 
-![image](https://user-images.githubusercontent.com/77458990/128561443-3cdeae65-64a9-41f3-b46b-fd2290954545.png)
 - - - 
 
 **Flask** server to host the site. **Python** was used to calculate the gas cost.
