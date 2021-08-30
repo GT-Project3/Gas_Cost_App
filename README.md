@@ -1,17 +1,23 @@
-<h1 align="center"> ETL PROJECT </h1>
+<h1 align="center"> GAS COST CALCULATOR PROJECT </h1>
 
-I used election 2020 data to create a website that was served that data and generated graphs. The data was collected from Kaggle.com (https://www.kaggle.com/unanimad/us-election-2020) and the files used were: president_county.csv, president_county_candidate.csv, and president_state.csv.
+We used gas price data with **Machine Learning** to create an app that took in user inputs of a road trip and gave the user a total cost for gas for that trip. The data was collected from www.eia.gov (https://www.eia.gov/opendata/qb.php?category=240691) via API.
 
-![image](https://user-images.githubusercontent.com/77458990/128562777-3fd3268f-e2c4-47e9-9327-00b19718762a.png)
+![EIA](https://user-images.githubusercontent.com/77458990/131356768-8d3a0fdd-c6c3-44a8-9cf5-9df4f6ed46f0.PNG)
 - - - 
 
-I set up a backend server using MongoDB (create_mongodb.ipynb). I used Python to calculate the election percentages by state and by county and Flask to serve the data to a local server. 
+We set up a backend server using **AWS** and **PostgreSQL**. We calculated future prices prices of gas using **Scikit Learn**. 
 
 ![image](https://user-images.githubusercontent.com/77458990/128561443-3cdeae65-64a9-41f3-b46b-fd2290954545.png)
 - - - 
 
-Finally, I used JavaScript, D3, and Geojson information to create a dynnamic map the United States based on candidate win percentage at the state and county level. 
-![image](https://user-images.githubusercontent.com/77458990/128561700-8db59cc4-cce0-48ef-a521-7e06d846381b.png)
+**Flask** server to host the site. **Python** was used to calculate the gas cost.
+- - - 
 
-(When a state is clicked on)
-![image](https://user-images.githubusercontent.com/77458990/128561749-68d48f8f-4ca2-4e6c-9f81-03aa6cded0f7.png)
+Finally, we used **JavaScript**, **JQuery**, **Ajax**, and **Google Maps API** to build the app and take in user information and push back total gast cost.
+(When "Calculate" button is clicked)
+![ATL_to_LA_Cost](https://user-images.githubusercontent.com/77458990/131356603-3c70d6f5-f90f-47cf-bd1b-89db94f6bc1f.PNG)
+
+(After "Close" button is clicked)
+![ATL_to_LA](https://user-images.githubusercontent.com/77458990/131356870-e0a9a4e2-200f-453c-b38f-d9477c6e9ebf.PNG)
+
+
