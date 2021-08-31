@@ -1,4 +1,4 @@
-<h1 align="center"> GAS COST CALCULATOR PROJECT </h1>
+<h1 align="center"> GAS COST CALCULATOR APP </h1>
 
 We used gas price data with **Machine Learning** to create an app that took in user inputs of a road trip and gave the user a total cost for gas for that trip. The data was collected from www.eia.gov (https://www.eia.gov/opendata/qb.php?category=240691) via API.
 
